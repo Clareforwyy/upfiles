@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+		<title>课堂观察</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<style>
+			
+		</style>
+		<!--[if IE]>
+        	<script src="../../js/common/html5.js" type="text/javascript" charset="utf-8"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+            <script src="../../js/common/respond.min.js" type="text/javascript" charset="utf-8"></script>
+        <![endif]-->
+	</head>
+	<body>
+		<!--内容-->
+		<div class="upload">
+			<input id="fileupload" type="file" name="files[]" data-url="php/" multiple>
+		</div>
+		<div class="filelist">
+
+		</div>
+	</body>
+	<script src="js/jquery-2.0.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.ui.widget.js"></script>
+	<script src="js/jquery.iframe-transport.js"></script>
+	<script src="js/jquery.fileupload.js"></script>
+	<script>
+	$(function () {
+	     $('#fileupload').fileupload({
+	        dataType: 'json',
+	        add: function (e, data) {
+	        	var uploadErrors = '';
+ 				
+		        var acceptFileTypes = /\/(pdf|jpeg)$/i;
+		        if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+		            uploadErrors='格式不支持';
+		            alert(uploadErrors);
+		            return false;
+		        }
+		 		//size单位是b、500k
+		 		console.log(data.originalFiles[0]['type'])//类型
+		 		console.log(data.originalFiles[0].name)//名字 
+		        console.log(data.originalFiles[0]['size']) ;//大小
+		        if (data.originalFiles[0]['size'] > 5000000) {
+		            uploadErrors='文件过大';
+		            alert(uploadErrors);
+		            return false;
+		        }
+		        if(uploadErrors.length > 0) {
+
+		            alert(uploadErrors.join("\n"));
+		            
+		        } else {
+		            // data.context = $('<a/>').text('上传中...').appendTo($(".filelist"));
+		            data.context = $('<a href="javascript:;"></a>').text("上传中。。").appendTo($(".filelist"));
+	            	data.submit();
+		        }
+
+	           
+	        },
+	        done: function (e, data) {
+	        	
+	            data.context.html('类型：'+data.originalFiles[0]['type']+'<br>大小：'+data.originalFiles[0]['size']+'<br>名字：'+data.originalFiles[0].name+'<br>上传成功...').attr('data-id','102202');
+	        }
+	    });
+	});
+</script>
+</html>
